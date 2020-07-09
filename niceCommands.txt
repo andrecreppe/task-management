@@ -1,0 +1,18 @@
+*General*
+1) Run the project in dev mode
+npm run start:dev
+
+
+*Creating files*
+1) Modules
+nest g module NAME
+
+2) Controllers 
+nest g controller NAME --no-spec
+
+3) Services
+nest g service NAME --no-spec
+
+
+*OBS*
+1) no spec = not generate a spec file
