@@ -1,24 +1,43 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Patch, Query } from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import { Task } from './task.model';
-import { time } from 'console';
-import { stringify } from 'querystring';
-import { title } from 'process';
+import { Task, TaskStatus } from './task.model';
+import { CreateTaskDto } from './dto/create-task.dto';
+import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 
 @Controller('tasks')
 export class TasksController {
   constructor(private taskService: TasksService) {}
 
   @Get()
-  getAllTasks(): Task[] {
-    return this.taskService.getAllTasks();
+  getTasks(@Query() filterDto: GetTasksFilterDto): Task[] {
+    if(Object.keys(filterDto).length) {
+      return this.taskService.getTasksWithFilters(filterDto);
+    }
+    else {
+      return this.taskService.getAllTasks();
+    }
+  }
+
+  @Get('/:id')
+  getTaskById(@Param('id') id: string): Task {
+    return this.taskService.getTaskById(id);
   }
 
   @Post()
-  createTask(
-    @Body('title') title: string,
-    @Body('description') description: string
+  createTask(@Body() createTaskDto: CreateTaskDto): Task {
+    return this.taskService.createTask(createTaskDto);
+  }
+
+  @Patch('/:id/status')
+  updateTaskStatus( //here we can insert a DTO to improve the code
+    @Param('id') id: string,
+    @Body('status') status: TaskStatus
   ): Task {
-    return this.taskService.createTask(title, description);
+    return this.taskService.updateTaskStatus(id, status);
+  }
+
+  @Delete('/:id')
+  deleteTaskById(@Param('id') id: string): void {
+    this.taskService.deleteTask(id);
   }
 }
