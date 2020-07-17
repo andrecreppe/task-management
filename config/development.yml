@@ -1,0 +1,9 @@
+#Allways true when code is run in dev mode
+db:
+ host: 'localhost'
+ username: 'creppe'
+ password: '06082002'
+ synchronize: true
+
+jwt:
+  secret: 'topSecret51'

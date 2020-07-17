@@ -1,0 +1,3 @@
+#Allways available when the code is compiled for production
+db:
+ synchronize: false
